@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box {
+      width: 325px;
+      height: 364px;
+      margin: 100px;
+      border: 1px solid #ccc;
+      position: relative;
+    }
+
+    .big {
+      width: 340px;
+      height: 390px;
+      position: absolute;
+      top: 0;
+      left: 360px;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      display: none;
+    }
+
+    .mask {
+      width: 175px;
+      height: 175px;
+      background: rgba(255, 255, 0, 0.4);
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: move;
+      display: none;
+    }
+
+    .small {
+      position: relative;
+    }
+
+    .box img {
+      vertical-align: top;
+    }
+
+    #bigBox > img { //让图片脱标
+    position: absolute;
+    }
+  </style>
+  <script>
+    function $get(idName){
+      return document.getElementById(idName);
+    }
+    window.onload = function(){
+
+      var box=$get("box");
+      var smallBox=$get("smallBox");
+      var mask=$get("mask");
+      var bigBox=$get("bigBox");
+      var bigImag=$get("bigImag");
+
+      //2.mousemove -->Let the mask shows
+      smallBox.onmousemove= function (event) {
+        mask.style.display='block';
+        //3.let the mask follows mouse
+        var pageX = event.pageX || event.clientX +document.documentElement.scrollLeft;
+        var pageY = event.pageY || event.clientY +document.documentElement.scrollTop;
+        var x = pageX-box.offsetLeft;
+        var y = pageY-box.offsetTop;
+
+        x=x-mask.offsetWidth/2;
+        y=y-mask.offsetHeight/2;
+//        console.log(x);
+//        console.log(y);
+        x= x<0?0:x;
+        y = y<0?0:y;
+
+        x=x>box.offsetWidth-mask.offsetWidth?box.offsetWidth-mask.offsetWidth:x;
+        y=y>box.offsetHeight-mask.offsetHeight?box.offsetHeight-mask.offsetHeight:y;
+        mask.style.left=x +'px';
+        mask.style.top=y +'px';
+      }
+    }
+  </script>
+</head>
+<body>
+<div class="box" id="box">
+  <div class="small" id="smallBox">
+    <img src="images/smallPicture.jpg" width="325" alt=""/>
+    <div class="mask" id="mask"></div>
+  </div>
+  <div class="big" id="bigBox">
+    <img id="bigImg" src="images/bigPicture.jpg" width="649" alt=""/>
+  </div>
+</div>
+
+</body>
+</html>
